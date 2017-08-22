@@ -8,9 +8,9 @@ pipeline {
                    cd dt-ejb
                    mvn clean test install
                    cd ../Rest
-                   mvn clean test
+                   mvn clean test install
                    cd ../web
-                   mvn clean test
+                   mvn clean test install
                    '''
              }
         }
