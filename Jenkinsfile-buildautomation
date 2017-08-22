@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Bbuild Automation') {
+        stage('Build Automation') {
             steps {
                 sh '''
                    echo "BUILD NUMBER: ${BUILD_NUMBER}"
