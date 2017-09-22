@@ -2,8 +2,9 @@ pipeline {
     agent any
     parameters {
         string(name: 'ICP_MASTER_CFC', defaultValue: 'master.cfc:8500')
-        string(name: 'ICP_MASTER_8001', defaultValue: 'https://172.21.20.136:8001')
-        string(name: 'ICP_TOKEN', defaultValue: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tdHMyYngiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImQ1NWMyOWU0LTg3NjItMTFlNy04Y2FkLTAwNTA1NjlhNGJhMiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.Zi8jwNQB2EoKAe8YwPHQYbYp8yFX1RTbytiJ1lHl5zhOncHryI4prfZS1HbQY9c0catKFPJJWpZqIm43tWt-TJzZ4yj0-jVlHuwCEpbWqIM8392ewqplOpG6U_JOJh9-tlxP1IqnwkTINK6VegnMZoHRm2XzS7BTj2hEPliMH3VDseNRkdta4wgh-2XKYjcGLOsN_x3D7fo-DzD6VjGNthIWp4f8P2M8HffvBuNgJRVnI0ZYki1RH1u67fzT2hFHITC9mMyo19-ZPZIqngpNsY-uOp7f-56QdIRBu1GhAfQCnjHdkZW5FY5kNwJbQ25Ul6S5x4UQ5uBIpARISODBzQ')
+        string(name: 'ICP_MASTER_8001', defaultValue: 'https://172.21.20.120:8001')
+        string(name: 'ICP_TOKEN', defaultValue: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tZ3A1MXQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImM3ZmNjMzA5LTlmMDAtMTFlNy05MTM1LTAwNTA1NmEwZGE2MiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.C0jBpKTRro9Pw7caipXZ4A3eMVAMHsDOV6Iwn-3mLUaRBA2SQlkKd9W_OY3mn9Ytvv4M4GtJyPXDKKTEyDI4BzuFtUea-tmEYrf2CSZHLoWE6BO1nlU-Pz0j7JfwtdSsCkVqEFeUm3B5ck2vnuvg_GhgOTuSjjf5AB5WENL6L3xYl9xFnq_0wHdfEGS8NA9X1v6AwWkLELM9MP3a9XvNbfFpv1v_c_JwP_3XAjF_2vaAvaFvDZ5Niv1xI1t_NCS3v2QHzwTnNEJWfYapXtlvQk5fJ6dYJm-sY6Ul13MgOy4r_ua5xa842cq6pPowz1IclkP--6o6_vT65z3tG5PM4A')
+        string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'daytrader-ee6')
     }
     stages {
         stage('Continuous Integration') {
@@ -27,9 +28,12 @@ pipeline {
                     echo "docker login to master.cfc"
                     docker login -u admin -p admin $ICP_MASTER_CFC
                     echo "docker tag"
-                    docker tag dhvines/daytrader-ee6:0.0.1-SNAPSHOT $ICP_MASTER_CFC/default/daytrader-ee6
+                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $ICP_MASTER_CFC/default/$DOCKER_IMAGE_TAG
                     echo "docker push"
-                    docker push $ICP_MASTER_CFC/default/daytrader-ee6
+                    docker push $ICP_MASTER_CFC/default/$DOCKER_IMAGE_TAG
+                    echo "update app.json"
+                    sed -i "s/<MASTER_CFC>/$ICP_MASTER_CFC/g" app.json
+                    sed -i "s/<DOCKER_IMAGE>/$DOCKER_IMAGE_TAG/g" app.json
                     echo "kubectl login"
                     kubectl config set-cluster cfc --server=$ICP_MASTER_8001 --insecure-skip-tls-verify=true
                     kubectl config set-context cfc --cluster=cfc
@@ -38,19 +42,18 @@ pipeline {
                     kubectl config use-context cfc
                     #!/bin/bash
                     echo "checking if wlp-daytrader-jenkins already exists"
-                    if kubectl describe service wlp-daytrader-jenkins; then
-                        echo "Service already exists, delete first"
-                        kubectl delete service wlp-daytrader-jenkins
-                    fi
                     if kubectl describe deployment wlp-daytrader-jenkins; then
-                        echo "Application already exists, delete first"
-                        kubectl delete deployment wlp-daytrader-jenkins
+                        echo "Application already exists, update..."
+                        kubectl set image deployment/wlp-daytrader-jenkins wlp-daytrader-jenkins=$ICP_MASTER_CFC/default/$DOCKER_IMAGE_TAG
+                    else
+                        echo "Create application"
+                        kubectl create -f app.json
+                        echo "Create service"
+                        set +e
+                        kubectl create -f service.json    
                     fi
-                    echo "Create application"
-                    kubectl create -f app.json
-                    echo "Create service"
-                    set +e
-                    kubectl create -f service.json                                      
+                    echo "Describe Application"
+                    kubectl describe deployment wlp-daytrader-jenkins
                     echo "finished"
                 '''
             }
