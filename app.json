@@ -29,7 +29,7 @@
         "containers": [
           {
             "name": "wlp-daytrader-jenkins",
-            "image": "master.cfc:8500/default/daytrader-ee6",
+            "image": "<MASTER_CFC>/default/<DOCKER_IMAGE>",
              "ports": [
               {
                 "containerPort": 80,
