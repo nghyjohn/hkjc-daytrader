@@ -1,0 +1,26 @@
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "wlp-daytrader-jenkins-ingress",
+    "namespace": "default",
+    "resourceVersion": "6865544"
+  },
+  "spec": {
+    "rules": [
+      {
+        "http": {
+          "paths": [
+            {
+              "path": "/daytrader",
+              "backend": {
+                "serviceName": "wlp-daytrader-jenkins",
+                "servicePort": 9080
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
