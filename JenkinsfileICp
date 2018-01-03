@@ -51,6 +51,7 @@ pipeline {
                         echo "Create service"
                         set +e
                         kubectl create -f service.json    
+                        kubectl create -f ingress.json
                     fi
                     echo "Describe Application"
                     kubectl describe deployment wlp-daytrader-jenkins
