@@ -32,7 +32,7 @@
             "image": "<MASTER_CFC>/default/<DOCKER_IMAGE>",
              "ports": [
               {
-                "containerPort": 80,
+                "containerPort": 9080,
                 "protocol": "TCP"
               }
             ],
