@@ -14,7 +14,7 @@
       {
         "name": "http",
         "protocol": "TCP",
-        "port": 80,
+        "port": 9080,
         "targetPort": 9080,
         "nodePort": 31420
       }
