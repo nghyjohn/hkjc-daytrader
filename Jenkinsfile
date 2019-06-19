@@ -31,7 +31,7 @@ pipeline {
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
                 sh'''
-                git log -n 1 --pretty=format:'%h'"
+                git log -n 1 --pretty=format:'%h'
                 '''
             }
         }
