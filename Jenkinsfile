@@ -16,8 +16,13 @@ pipeline {
         stage ('Cleanup old images'){
             steps {
                 sh'''
-                docker rmi 192.168.136.160/docker-local/daytrader-ee6:$DOCKER_IMAGE_VERSION 2>&1
-                docker rmi dhvines/daytrader-ee6:1.0-SNAPSHOT 2>&1
+                if [[ "$(docker images -q 192.168.136.160/docker-local/daytrader-ee6:$DOCKER_IMAGE_VERSION 2> /dev/null)" == "" ]]; then
+                    docker rmi 192.168.136.160/docker-local/daytrader-ee6:$DOCKER_IMAGE_VERSION
+                fi
+
+                if [[ "$(docker images -q dhvines/daytrader-ee6:1.0-SNAPSHOT 2> /dev/null)" == "" ]]; then
+                    docker rmi dhvines/daytrader-ee6:1.0-SNAPSHOT
+                fi
                 '''
             }
         }
