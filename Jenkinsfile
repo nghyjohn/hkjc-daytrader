@@ -8,7 +8,8 @@ pipeline {
         string(name: 'JFROG_DOCKER', defaultValue: '192.168.136.160')
         string(name: 'JFROG_DOCKER_REPO', defaultValue: '192.168.136.160/docker-local')
     }
-    stage ('Clone') {
+    stages {
+        stage ('Clone') {
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
             }
