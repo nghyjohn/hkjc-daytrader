@@ -347,7 +347,7 @@
 			              <ports> <port>9080:9080</port><port>9443:9443</port> </ports>                         
 			              <wait>
 			                <log>
-			                  (?s)The server defaultServer is ready to run a smarter planet.
+			                  (?s)The defaultServer server is ready to run a smarter planet.
 			                </log>
 			                <time>60000</time>
 			              </wait>
