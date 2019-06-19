@@ -30,8 +30,11 @@ pipeline {
         stage ('Clone') {
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
+                
+                gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
                 sh'''
-                git log -1|tail -1|xargs
+                echo "msg"
+                echo $gitCommitMessage
                 '''
             }
         }
