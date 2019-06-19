@@ -16,7 +16,7 @@ pipeline {
     
     stages {
         
-        /*
+        
         stage ('Cleanup old images'){
             steps {
                 sh'''
@@ -100,7 +100,7 @@ pipeline {
                 
             }
         }
-        */
+        
         stage('Push image to JFrog Docker Repo') {
             environment {
                 gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
