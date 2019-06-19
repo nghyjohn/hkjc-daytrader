@@ -1,8 +1,11 @@
 pipeline {
     agent any
     tools {
-    maven 'mvn'
-  }
+        maven 'mvn'
+    }
+    environment {
+        MAVEN_HOME = '/opt/maven'
+    }
     parameters {
         string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'daytrader-ee6')
         string(name: 'JFROG_DOCKER', defaultValue: '192.168.136.160')
@@ -44,7 +47,6 @@ pipeline {
             steps {
 
                 rtMavenRun (
-                    tool: mvn, // Tool name from Jenkins configuration
                     pom: 'dt-ejb/pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER",
@@ -53,7 +55,6 @@ pipeline {
                 
 
                 rtMavenRun (
-                    tool: mvn, // Tool name from Jenkins configuration
                     pom: 'Rest/pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER",
@@ -61,7 +62,6 @@ pipeline {
                 )
                 
                 rtMavenRun (
-                    tool: mvn, // Tool name from Jenkins configuration
                     pom: 'web/pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER",
@@ -69,7 +69,6 @@ pipeline {
                 )
                 
                 rtMavenRun (
-                    tool: mvn, // Tool name from Jenkins configuration
                     pom: 'daytrader-ee6/pom.xml',
                     goals: 'clean verify -Pci-docker',
                     deployerId: "MAVEN_DEPLOYER",
