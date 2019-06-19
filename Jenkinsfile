@@ -12,6 +12,8 @@ pipeline {
         string(name: 'JFROG_DOCKER_REPO', defaultValue: '192.168.136.160/docker-local')
         string(name: 'DOCKER_IMAGE_VERSION', defaultValue: '0.1')
     }
+    
+    /*
     stages {
         stage ('Cleanup old images'){
             steps {
@@ -28,9 +30,7 @@ pipeline {
         }
         
         stage ('Clone') {
-            environment {
-                gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
-            }
+            
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
                 
@@ -98,8 +98,11 @@ pipeline {
                 
             }
         }
-        
+        */
         stage('Push image to JFrog Docker Repo') {
+            environment {
+                gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
+            }
             steps {
                 sh '''
                     echo "docker login to JFrog Docker Repo"
