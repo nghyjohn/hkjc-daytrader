@@ -8,22 +8,76 @@ pipeline {
         string(name: 'JFROG_DOCKER', defaultValue: '192.168.136.160')
         string(name: 'JFROG_DOCKER_REPO', defaultValue: '192.168.136.160/docker-local')
     }
-    stages {
-        stage('Continuous Integration') {
+    stage ('Clone') {
             steps {
-                sh '''
-                   cd dt-ejb
-                   mvn clean install
-                   cd ../Rest
-                   mvn clean install
-                   cd ../web
-                   mvn clean install
-                   cd ../daytrader-ee6
-                   mvn clean verify -Pci-docker
-                   cd ..
-                   '''
-             }
+                git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
+            }
         }
+    
+        stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "JFrog",
+                    url: "http://192.168.136.160/artifactory",
+                    username: "admin",
+                    password: "P@ssw0rd"
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "JFrog",
+                    releaseRepo: "libs-release-local",
+                    snapshotRepo: "libs-snapshot-local"
+                )
+
+                rtMavenResolver (
+                    id: "MAVEN_RESOLVER",
+                    serverId: "JFrog",
+                    releaseRepo: "libs-release",
+                    snapshotRepo: "libs-snapshot"
+                )
+            }
+        }
+        
+        stage ('Exec Maven') {
+            steps {
+
+                rtMavenRun (
+                    tool: mvn, // Tool name from Jenkins configuration
+                    pom: 'dt-ejb/pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
+                
+
+                rtMavenRun (
+                    tool: mvn, // Tool name from Jenkins configuration
+                    pom: 'Rest/pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
+                
+                rtMavenRun (
+                    tool: mvn, // Tool name from Jenkins configuration
+                    pom: 'web/pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
+                
+                rtMavenRun (
+                    tool: mvn, // Tool name from Jenkins configuration
+                    pom: 'daytrader-ee6/pom.xml',
+                    goals: 'clean verify -Pci-docker',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
+                
+            }
+        }
+        
         stage('Push image to JFrog Docker Repo') {
             steps {
                 sh '''
