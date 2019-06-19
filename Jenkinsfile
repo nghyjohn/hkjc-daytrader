@@ -30,6 +30,8 @@ pipeline {
         stage ('Clone') {
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
+                shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                echo $shortCommit
             }
         }
     
