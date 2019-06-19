@@ -31,7 +31,7 @@ pipeline {
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
                 
-                dev gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
+                def gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
                 sh'''
                 echo "msg"
                 echo $gitCommitMessage
