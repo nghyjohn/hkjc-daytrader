@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+    maven 'mvn'
+  }
     parameters {
         string(name: 'ICP_MASTER_CFC', defaultValue: 'mycluster.icp:8500')
         string(name: 'ICP_MASTER_8001', defaultValue: 'https://9.42.41.72:8001')
