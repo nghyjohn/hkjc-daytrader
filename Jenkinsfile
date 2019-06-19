@@ -13,8 +13,10 @@ pipeline {
         string(name: 'DOCKER_IMAGE_VERSION', defaultValue: '0.1')
     }
     
-    /*
+    
     stages {
+        
+        /*
         stage ('Cleanup old images'){
             steps {
                 sh'''
