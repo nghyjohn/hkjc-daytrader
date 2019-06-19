@@ -35,10 +35,7 @@ pipeline {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
                 
                 
-                sh'''
-                echo "msg"
-                echo $gitCommitMessage
-                '''
+                
             }
         }
     
@@ -108,7 +105,7 @@ pipeline {
                     echo "docker login to JFrog Docker Repo"
                     docker login -u admin -p P@ssw0rd $JFROG_DOCKER
                     echo "docker tag"
-                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$DOCKER_IMAGE_VERSION
+                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$gitCommitMessage
                     echo "docker push"
                     docker push $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG
                     
