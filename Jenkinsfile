@@ -28,10 +28,13 @@ pipeline {
         }
         
         stage ('Clone') {
+            environment {
+                gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
+            }
             steps {
                 git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
                 
-                def gitCommitMessage = sh(returnStdout: true, script: 'git log -1|tail -1|xargs').trim()
+                
                 sh'''
                 echo "msg"
                 echo $gitCommitMessage
