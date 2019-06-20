@@ -109,9 +109,9 @@ pipeline {
                     echo "docker login to JFrog Docker Repo"
                     docker login -u admin -p P@ssw0rd $JFROG_DOCKER
                     echo "docker tag"
-                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$GIT_COMMIT
+                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$gitCommitMessage
                     echo "docker push"
-                    docker push $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG
+                    docker push $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$gitCommitMessage
                     docker rmi $(docker images -qa -f 'dangling=true')
                 '''
             }
