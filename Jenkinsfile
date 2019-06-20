@@ -13,30 +13,12 @@ pipeline {
         string(name: 'DOCKER_IMAGE_VERSION', defaultValue: '0.1')
     }
     
-    
     stages {
         
-        /*
-        stage ('Cleanup old images'){
-            steps {
-                sh'''
-                
-
-                if [[ "$(sudo docker images -q dhvines/daytrader-ee6:1.0-SNAPSHOT 2>/dev/null)" != "" ]]; then
-                    docker rmi dhvines/daytrader-ee6:1.0-SNAPSHOT
-                fi
-                echo $GIT_COMMIT
-                '''
-            }
-        }
-        */
         stage ('Clone') {
             
             steps {
-                git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"
-                
-                
-                
+                git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"   
             }
         }
     
@@ -116,6 +98,5 @@ pipeline {
                 '''
             }
         }
-        
     }
 }
