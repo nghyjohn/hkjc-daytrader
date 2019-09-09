@@ -8,8 +8,8 @@ pipeline {
     }
     parameters {
         string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'daytrader-ee6')
-        string(name: 'JFROG_DOCKER', defaultValue: '192.168.136.160')
-        string(name: 'JFROG_DOCKER_REPO', defaultValue: '192.168.136.160/docker-local')
+        string(name: 'JFROG_DOCKER', defaultValue: '192.168.136.213')
+        string(name: 'JFROG_DOCKER_REPO', defaultValue: '192.168.136.213/docker-local')
         string(name: 'DOCKER_IMAGE_VERSION', defaultValue: '0.1')
     }
     
@@ -26,9 +26,9 @@ pipeline {
             steps {
                 rtServer (
                     id: "JFrog",
-                    url: "http://192.168.136.160/artifactory",
+                    url: "http://192.168.136.213/artifactory",
                     username: "admin",
-                    password: "P@ssw0rd"
+                    password: "password"
                 )
 
                 rtMavenDeployer (
@@ -89,7 +89,7 @@ pipeline {
             steps {
                 sh '''
                     echo "docker login to JFrog Docker Repo"
-                    docker login -u admin -p P@ssw0rd $JFROG_DOCKER
+                    docker login -u admin -p password $JFROG_DOCKER
                     echo "docker tag"
                     docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$gitCommitMessage
                     echo "docker push"
