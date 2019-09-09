@@ -26,7 +26,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "JFrog",
-                    url: "http://192.168.136.213/artifactory",
+                    url: "http://192.168.136.213:8081/artifactory",
                     username: "admin",
                     password: "password"
                 )
