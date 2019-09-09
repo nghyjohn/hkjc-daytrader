@@ -18,7 +18,7 @@ pipeline {
         stage ('Clone') {
             
             steps {
-                git branch: 'master', url: "https://github.com/nghyjohn/daytrader-ee6.git"   
+                git branch: 'master', url: "https://github.com/nghyjohn/hkjc-daytrader.git"   
             }
         }
     
