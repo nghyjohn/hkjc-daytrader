@@ -52,7 +52,7 @@ pipeline {
 
                 rtMavenRun (
                     pom: 'dt-ejb/pom.xml',
-                    goals: 'clean install',
+                    goals: '-U clean install',
                     deployerId: "MAVEN_DEPLOYER",
                     resolverId: "MAVEN_RESOLVER"
                 )
@@ -60,21 +60,21 @@ pipeline {
 
                 rtMavenRun (
                     pom: 'Rest/pom.xml',
-                    goals: 'clean install',
+                    goals: '-U clean install',
                     deployerId: "MAVEN_DEPLOYER",
                     resolverId: "MAVEN_RESOLVER"
                 )
                 
                 rtMavenRun (
                     pom: 'web/pom.xml',
-                    goals: 'clean install',
+                    goals: '-U clean install',
                     deployerId: "MAVEN_DEPLOYER",
                     resolverId: "MAVEN_RESOLVER"
                 )
                 
                 rtMavenRun (
                     pom: 'daytrader-ee6/pom.xml',
-                    goals: 'clean verify -Pci-docker',
+                    goals: '-U clean verify -Pci-docker',
                     deployerId: "MAVEN_DEPLOYER",
                     resolverId: "MAVEN_RESOLVER"
                 )
