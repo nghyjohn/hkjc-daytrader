@@ -7,7 +7,7 @@ pipeline {
         MAVEN_HOME = '/opt/maven'
     }
     parameters {
-        string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'daytrader-ee6')
+        string(name: 'DOCKER_IMAGE_NAME', defaultValue: 'daytrader-ee6')
         string(name: 'JFROG_DOCKER', defaultValue: '192.168.136.213')
         string(name: 'JFROG_DOCKER_REPO', defaultValue: '192.168.136.213/docker-local')
         string(name: 'DOCKER_IMAGE_VERSION', defaultValue: '0.1')
@@ -91,9 +91,9 @@ pipeline {
                     echo "docker login to JFrog Docker Repo"
                     docker login -u admin -p password $JFROG_DOCKER
                     echo "docker tag"
-                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$gitCommitMessage
+                    docker tag dhvines/daytrader-ee6:1.0-SNAPSHOT $JFROG_DOCKER_REPO/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION
                     echo "docker push"
-                    docker push $JFROG_DOCKER_REPO/$DOCKER_IMAGE_TAG:$gitCommitMessage
+                    docker push $JFROG_DOCKER_REPO/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION
                 '''
             }
         }
